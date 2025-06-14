@@ -1,13 +1,40 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import { PortfolioProvider, usePortfolio } from '@/contexts/PortfolioContext';
+import MatrixRain from '@/components/backgrounds/MatrixRain';
+import FloatingBlobs from '@/components/backgrounds/FloatingBlobs';
+import ModeToggle from '@/components/ModeToggle';
+import HeroSection from '@/components/HeroSection';
+import SkillsSection from '@/components/SkillsSection';
+import PortfolioSection from '@/components/PortfolioSection';
+import ContactSection from '@/components/ContactSection';
+
+const PortfolioContent = () => {
+  const { mode } = usePortfolio();
+
+  return (
+    <div className="min-h-screen transition-all duration-500">
+      {/* Background Animation */}
+      {mode === 'developer' ? <MatrixRain /> : <FloatingBlobs />}
+      
+      {/* Mode Toggle */}
+      <ModeToggle />
+      
+      {/* Main Content */}
+      <main className="relative">
+        <HeroSection />
+        <SkillsSection />
+        <PortfolioSection />
+        <ContactSection />
+      </main>
+    </div>
+  );
+};
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <PortfolioProvider>
+      <PortfolioContent />
+    </PortfolioProvider>
   );
 };
 

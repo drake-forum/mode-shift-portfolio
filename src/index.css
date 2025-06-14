@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,35 +8,41 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* Developer Mode Colors */
+    --dev-background: 8 12% 5%;
+    --dev-foreground: 140 100% 85%;
+    --dev-accent: 140 100% 70%;
+    --dev-secondary: 140 30% 25%;
+    --dev-muted: 140 20% 15%;
+    
+    /* Designer Mode Colors */
+    --designer-background: 210 40% 98%;
+    --designer-foreground: 220 15% 25%;
+    --designer-accent: 280 100% 70%;
+    --designer-secondary: 280 30% 95%;
+    --designer-muted: 280 15% 90%;
+    
+    /* Dynamic colors (will be set by JS) */
+    --background: 210 40% 98%;
+    --foreground: 220 15% 25%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 220 15% 25%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
+    --popover-foreground: 220 15% 25%;
+    --primary: 280 100% 70%;
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --secondary: 280 30% 95%;
+    --secondary-foreground: 220 15% 25%;
+    --muted: 280 15% 90%;
+    --muted-foreground: 220 15% 45%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --border: 280 15% 85%;
+    --input: 280 15% 85%;
+    --ring: 280 100% 70%;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -98,6 +106,109 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-500;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Matrix Rain Animation */
+  .matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .matrix-drop {
+    position: absolute;
+    top: -100px;
+    color: #00ff00;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    animation: matrix-fall linear infinite;
+  }
+  
+  @keyframes matrix-fall {
+    to {
+      transform: translateY(100vh);
+    }
+  }
+  
+  /* Floating Blobs Animation */
+  .floating-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+  
+  /* Typewriter Animation */
+  .typewriter {
+    overflow: hidden;
+    border-right: 0.15em solid;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: currentColor; }
+  }
+  
+  /* Content Layer */
+  .content-layer {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Mode-specific styles */
+  .dev-mode {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .designer-mode {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Gradient Text */
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .dev-gradient-text {
+    background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
