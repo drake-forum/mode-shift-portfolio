@@ -15,12 +15,12 @@
     --dev-secondary: 140 30% 25%;
     --dev-muted: 140 20% 15%;
     
-    /* Designer Mode Colors - Light Theme */
-    --designer-background: 255 255 255;
-    --designer-foreground: 30 41 59;
-    --designer-accent: 59 130 246;
-    --designer-secondary: 248 250 252;
-    --designer-muted: 241 245 249;
+    /* Designer Mode Colors - Dark Theme with Bright Accents */
+    --designer-background: 15 23 42;
+    --designer-foreground: 248 250 252;
+    --designer-accent: 99 102 241;
+    --designer-secondary: 30 41 59;
+    --designer-muted: 51 65 85;
     
     /* Dynamic colors (will be set by JS) */
     --background: 210 40% 98%;
