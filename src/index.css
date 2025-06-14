@@ -19,8 +19,8 @@
     --designer-background: 15 23 42;
     --designer-foreground: 248 250 252;
     --designer-accent: 59 130 246;
-    --designer-secondary: 30 41 59;
-    --designer-muted: 51 65 85;
+    --designer-secondary: 51 65 85;
+    --designer-muted: 71 85 105;
     
     /* Dynamic colors (will be set by JS) */
     --background: 210 40% 98%;
