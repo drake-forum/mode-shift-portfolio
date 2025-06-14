@@ -8,9 +8,12 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ProcessSection from '@/components/ProcessSection';
+import ServicesSection from '@/components/ServicesSection';
+import FeaturedProjectsSection from '@/components/FeaturedProjectsSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import StatsSection from '@/components/StatsSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
+import BlogPreviewSection from '@/components/BlogPreviewSection';
 import ContactSection from '@/components/ContactSection';
 
 const PortfolioContent = () => {
@@ -30,10 +33,13 @@ const PortfolioContent = () => {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
+        <ServicesSection />
         <ProcessSection />
+        <FeaturedProjectsSection />
         <PortfolioSection />
         <StatsSection />
         <TestimonialsSection />
+        <BlogPreviewSection />
         <ContactSection />
       </main>
     </div>
