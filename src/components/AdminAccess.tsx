@@ -16,13 +16,13 @@ const AdminAccess: React.FC = () => {
         return 0; // Reset counter
       }
       
-      // Reset counter after 3 seconds of no clicks
-      setTimeout(() => {
-        setClickCount(0);
-      }, 3000);
-      
       return newCount;
     });
+
+    // Reset counter after 3 seconds of no clicks using useEffect pattern
+    setTimeout(() => {
+      setClickCount(0);
+    }, 3000);
   };
 
   return (

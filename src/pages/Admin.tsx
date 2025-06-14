@@ -166,6 +166,19 @@ const AdminContent = () => {
   });
   const [activeSection, setActiveSection] = useState('dashboard');
 
+  // Load saved data on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('portfolio-data');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        setPortfolioData(parsedData);
+      } catch (error) {
+        console.error('Error loading saved data:', error);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     // Check if user is already authenticated
     const authStatus = localStorage.getItem('admin-authenticated');
@@ -205,7 +218,8 @@ const AdminContent = () => {
   };
 
   const handleSave = (section: string) => {
-    // TODO: Implement actual save functionality
+    // Save to localStorage for persistence
+    localStorage.setItem('portfolio-data', JSON.stringify(portfolioData));
     toast({
       title: "Changes Saved",
       description: `${section} has been updated successfully.`
@@ -465,19 +479,57 @@ const AdminContent = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => setActiveSection('hero')}
+                    >
                       <Edit className="mr-2 h-4 w-4" />
                       Update Bio
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => setActiveSection('projects')}
+                    >
                       <Plus className="mr-2 h-4 w-4" />
                       Add New Project
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = '/resume.pdf';
+                        link.download = 'resume.pdf';
+                        link.click();
+                        toast({
+                          title: "Resume Downloaded",
+                          description: "Your resume has been downloaded successfully."
+                        });
+                      }}
+                    >
                       <Upload className="mr-2 h-4 w-4" />
-                      Upload Resume
+                      Download Resume
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => {
+                        const dataStr = JSON.stringify(portfolioData, null, 2);
+                        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                        const url = URL.createObjectURL(dataBlob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+                        link.click();
+                        URL.revokeObjectURL(url);
+                        toast({
+                          title: "Backup Created",
+                          description: "Portfolio data has been backed up successfully."
+                        });
+                      }}
+                    >
                       <RefreshCw className="mr-2 h-4 w-4" />
                       Backup Data
                     </Button>
@@ -637,7 +689,10 @@ const AdminContent = () => {
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm font-medium">Font Family</Label>
-                        <Select value={portfolioData.appearance.fontFamily}>
+                        <Select 
+                          value={portfolioData.appearance.fontFamily}
+                          onValueChange={(value) => updatePortfolioData('appearance', 'fontFamily', value)}
+                        >
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -870,6 +925,575 @@ const AdminContent = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          )}
+
+          {/* Skills Section */}
+          {activeSection === 'skills' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Skills Management</h2>
+                  <p className="text-muted-foreground">Manage your technical and soft skills</p>
+                </div>
+                <Button onClick={() => handleSave('Skills')} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save Changes
+                </Button>
+              </div>
+              
+              <div className="grid gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5" />
+                      Technical Skills
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Skills (comma-separated)</Label>
+                      <Textarea
+                        value={portfolioData.skills.technical.join(', ')}
+                        onChange={(e) => updatePortfolioData('skills', 'technical', e.target.value.split(', ').filter(s => s.trim()))}
+                        rows={3}
+                        placeholder="React, TypeScript, Node.js, Python, PostgreSQL"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      Soft Skills
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Skills (comma-separated)</Label>
+                      <Textarea
+                        value={portfolioData.skills.soft.join(', ')}
+                        onChange={(e) => updatePortfolioData('skills', 'soft', e.target.value.split(', ').filter(s => s.trim()))}
+                        rows={3}
+                        placeholder="Leadership, Communication, Problem Solving, Team Work"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* Services Section */}
+          {activeSection === 'services' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Services Management</h2>
+                  <p className="text-muted-foreground">Manage the services you offer</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      const newService = {
+                        title: 'New Service',
+                        description: 'Service description',
+                        price: '$0',
+                        features: ['Feature 1', 'Feature 2']
+                      };
+                      setPortfolioData(prev => ({
+                        ...prev,
+                        services: [...prev.services, newService]
+                      }));
+                      toast({
+                        title: "Service Added",
+                        description: "New service has been added successfully."
+                      });
+                    }}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Service
+                  </Button>
+                  <Button onClick={() => handleSave('Services')} className="gap-2">
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid gap-6">
+                {portfolioData.services.map((service, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <Briefcase className="h-5 w-5" />
+                          Service {index + 1}
+                        </CardTitle>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => {
+                            setPortfolioData(prev => ({
+                              ...prev,
+                              services: prev.services.filter((_, i) => i !== index)
+                            }));
+                            toast({
+                              title: "Service Deleted",
+                              description: "Service has been removed successfully."
+                            });
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Service Title</Label>
+                          <Input
+                            value={service.title}
+                            onChange={(e) => {
+                              const updatedServices = [...portfolioData.services];
+                              updatedServices[index].title = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, services: updatedServices }));
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Price</Label>
+                          <Input
+                            value={service.price}
+                            onChange={(e) => {
+                              const updatedServices = [...portfolioData.services];
+                              updatedServices[index].price = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, services: updatedServices }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Description</Label>
+                        <Textarea
+                          value={service.description}
+                          onChange={(e) => {
+                            const updatedServices = [...portfolioData.services];
+                            updatedServices[index].description = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, services: updatedServices }));
+                          }}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Features (comma-separated)</Label>
+                        <Textarea
+                          value={service.features.join(', ')}
+                          onChange={(e) => {
+                            const updatedServices = [...portfolioData.services];
+                            updatedServices[index].features = e.target.value.split(', ').filter(f => f.trim());
+                            setPortfolioData(prev => ({ ...prev, services: updatedServices }));
+                          }}
+                          rows={2}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Projects Section */}
+          {activeSection === 'projects' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Projects Management</h2>
+                  <p className="text-muted-foreground">Showcase your portfolio projects</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      const newProject = {
+                        title: 'New Project',
+                        description: 'Project description',
+                        tech: ['React'],
+                        image: '/placeholder.svg',
+                        github: 'https://github.com',
+                        demo: 'https://demo.com'
+                      };
+                      setPortfolioData(prev => ({
+                        ...prev,
+                        projects: [...prev.projects, newProject]
+                      }));
+                      toast({
+                        title: "Project Added",
+                        description: "New project has been added successfully."
+                      });
+                    }}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Project
+                  </Button>
+                  <Button onClick={() => handleSave('Projects')} className="gap-2">
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid gap-6">
+                {portfolioData.projects.map((project, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <Image className="h-5 w-5" />
+                          Project {index + 1}
+                        </CardTitle>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => {
+                            setPortfolioData(prev => ({
+                              ...prev,
+                              projects: prev.projects.filter((_, i) => i !== index)
+                            }));
+                            toast({
+                              title: "Project Deleted",
+                              description: "Project has been removed successfully."
+                            });
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Project Title</Label>
+                        <Input
+                          value={project.title}
+                          onChange={(e) => {
+                            const updatedProjects = [...portfolioData.projects];
+                            updatedProjects[index].title = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, projects: updatedProjects }));
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Description</Label>
+                        <Textarea
+                          value={project.description}
+                          onChange={(e) => {
+                            const updatedProjects = [...portfolioData.projects];
+                            updatedProjects[index].description = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, projects: updatedProjects }));
+                          }}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">GitHub URL</Label>
+                          <Input
+                            value={project.github}
+                            onChange={(e) => {
+                              const updatedProjects = [...portfolioData.projects];
+                              updatedProjects[index].github = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, projects: updatedProjects }));
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Demo URL</Label>
+                          <Input
+                            value={project.demo}
+                            onChange={(e) => {
+                              const updatedProjects = [...portfolioData.projects];
+                              updatedProjects[index].demo = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, projects: updatedProjects }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Technologies (comma-separated)</Label>
+                        <Input
+                          value={project.tech.join(', ')}
+                          onChange={(e) => {
+                            const updatedProjects = [...portfolioData.projects];
+                            updatedProjects[index].tech = e.target.value.split(', ').filter(t => t.trim());
+                            setPortfolioData(prev => ({ ...prev, projects: updatedProjects }));
+                          }}
+                          placeholder="React, TypeScript, Node.js"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Testimonials Section */}
+          {activeSection === 'testimonials' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Testimonials Management</h2>
+                  <p className="text-muted-foreground">Manage client testimonials and reviews</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      const newTestimonial = {
+                        name: 'Client Name',
+                        role: 'Job Title, Company',
+                        text: 'Testimonial text here...',
+                        rating: 5
+                      };
+                      setPortfolioData(prev => ({
+                        ...prev,
+                        testimonials: [...prev.testimonials, newTestimonial]
+                      }));
+                      toast({
+                        title: "Testimonial Added",
+                        description: "New testimonial has been added successfully."
+                      });
+                    }}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Testimonial
+                  </Button>
+                  <Button onClick={() => handleSave('Testimonials')} className="gap-2">
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid gap-6">
+                {portfolioData.testimonials.map((testimonial, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <MessageSquare className="h-5 w-5" />
+                          Testimonial {index + 1}
+                        </CardTitle>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => {
+                            setPortfolioData(prev => ({
+                              ...prev,
+                              testimonials: prev.testimonials.filter((_, i) => i !== index)
+                            }));
+                            toast({
+                              title: "Testimonial Deleted",
+                              description: "Testimonial has been removed successfully."
+                            });
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Client Name</Label>
+                          <Input
+                            value={testimonial.name}
+                            onChange={(e) => {
+                              const updatedTestimonials = [...portfolioData.testimonials];
+                              updatedTestimonials[index].name = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, testimonials: updatedTestimonials }));
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Role & Company</Label>
+                          <Input
+                            value={testimonial.role}
+                            onChange={(e) => {
+                              const updatedTestimonials = [...portfolioData.testimonials];
+                              updatedTestimonials[index].role = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, testimonials: updatedTestimonials }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Testimonial Text</Label>
+                        <Textarea
+                          value={testimonial.text}
+                          onChange={(e) => {
+                            const updatedTestimonials = [...portfolioData.testimonials];
+                            updatedTestimonials[index].text = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, testimonials: updatedTestimonials }));
+                          }}
+                          rows={4}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Rating (1-5)</Label>
+                        <Select 
+                          value={testimonial.rating.toString()}
+                          onValueChange={(value) => {
+                            const updatedTestimonials = [...portfolioData.testimonials];
+                            updatedTestimonials[index].rating = parseInt(value);
+                            setPortfolioData(prev => ({ ...prev, testimonials: updatedTestimonials }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">1 Star</SelectItem>
+                            <SelectItem value="2">2 Stars</SelectItem>
+                            <SelectItem value="3">3 Stars</SelectItem>
+                            <SelectItem value="4">4 Stars</SelectItem>
+                            <SelectItem value="5">5 Stars</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Blog Section */}
+          {activeSection === 'blog' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Blog Management</h2>
+                  <p className="text-muted-foreground">Manage your blog posts and articles</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      const newPost = {
+                        title: 'New Blog Post',
+                        excerpt: 'Brief description of the blog post...',
+                        date: new Date().toISOString().split('T')[0],
+                        category: 'General'
+                      };
+                      setPortfolioData(prev => ({
+                        ...prev,
+                        blog: [...prev.blog, newPost]
+                      }));
+                      toast({
+                        title: "Blog Post Added",
+                        description: "New blog post has been added successfully."
+                      });
+                    }}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Post
+                  </Button>
+                  <Button onClick={() => handleSave('Blog')} className="gap-2">
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid gap-6">
+                {portfolioData.blog.map((post, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <FileText className="h-5 w-5" />
+                          Post {index + 1}
+                        </CardTitle>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => {
+                            setPortfolioData(prev => ({
+                              ...prev,
+                              blog: prev.blog.filter((_, i) => i !== index)
+                            }));
+                            toast({
+                              title: "Blog Post Deleted",
+                              description: "Blog post has been removed successfully."
+                            });
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Post Title</Label>
+                        <Input
+                          value={post.title}
+                          onChange={(e) => {
+                            const updatedBlog = [...portfolioData.blog];
+                            updatedBlog[index].title = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, blog: updatedBlog }));
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Excerpt</Label>
+                        <Textarea
+                          value={post.excerpt}
+                          onChange={(e) => {
+                            const updatedBlog = [...portfolioData.blog];
+                            updatedBlog[index].excerpt = e.target.value;
+                            setPortfolioData(prev => ({ ...prev, blog: updatedBlog }));
+                          }}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Date</Label>
+                          <Input
+                            type="date"
+                            value={post.date}
+                            onChange={(e) => {
+                              const updatedBlog = [...portfolioData.blog];
+                              updatedBlog[index].date = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, blog: updatedBlog }));
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Category</Label>
+                          <Input
+                            value={post.category}
+                            onChange={(e) => {
+                              const updatedBlog = [...portfolioData.blog];
+                              updatedBlog[index].category = e.target.value;
+                              setPortfolioData(prev => ({ ...prev, blog: updatedBlog }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
         </div>
