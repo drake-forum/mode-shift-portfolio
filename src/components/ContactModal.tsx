@@ -84,9 +84,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                   <div className="font-mono text-sm">
                     <div className="text-primary mb-2">// Contact Info</div>
                     <div className="space-y-1">
-                      <div><span className="text-accent">email</span>: <span className="text-primary">"alex@example.com"</span></div>
-                      <div><span className="text-accent">github</span>: <span className="text-primary">"github.com/alex"</span></div>
-                      <div><span className="text-accent">linkedin</span>: <span className="text-primary">"linkedin.com/in/alex"</span></div>
+                      <div><span className="text-accent">email</span>: <span className="text-primary">"drake.forum@example.com"</span></div>
+                      <div><span className="text-accent">github</span>: <span className="text-primary">"github.com/drakeforum"</span></div>
+                      <div><span className="text-accent">linkedin</span>: <span className="text-primary">"linkedin.com/in/drakeforum"</span></div>
                     </div>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <span className="text-xl">📧</span>
-                    <span className="text-sm">alex@example.com</span>
+                    <span className="text-sm">drake.forum@example.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xl">📱</span>
@@ -126,7 +126,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xl">🌐</span>
-                    <span className="text-sm">alex.design</span>
+                    <span className="text-sm">drakeforum.design</span>
                   </div>
                 </div>
 

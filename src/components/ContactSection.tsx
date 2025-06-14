@@ -25,16 +25,16 @@ const ContactSection: React.FC = () => {
               </div>
               <div className="ml-4 space-y-2">
                 <div>
-                  <span className="text-accent">email</span>: <span className="text-primary">"alex.rivera@example.com"</span>,
+                  <span className="text-accent">email</span>: <span className="text-primary">"drake.forum@example.com"</span>,
                 </div>
                 <div>
-                  <span className="text-accent">github</span>: <span className="text-primary">"github.com/alexrivera"</span>,
+                  <span className="text-accent">github</span>: <span className="text-primary">"github.com/drakeforum"</span>,
                 </div>
                 <div>
-                  <span className="text-accent">linkedin</span>: <span className="text-primary">"linkedin.com/in/alexrivera"</span>,
+                  <span className="text-accent">linkedin</span>: <span className="text-primary">"linkedin.com/in/drakeforum"</span>,
                 </div>
                 <div>
-                  <span className="text-accent">twitter</span>: <span className="text-primary">"@alexcodes"</span>
+                  <span className="text-accent">twitter</span>: <span className="text-primary">"@drakecodes"</span>
                 </div>
               </div>
               <div className="text-primary">{'}'}</div>
@@ -63,7 +63,7 @@ const ContactSection: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">📧</span>
-                  <span>alex.rivera@example.com</span>
+                  <span>drake.forum@example.com</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">📱</span>
@@ -71,7 +71,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">🌐</span>
-                  <span>alexrivera.design</span>
+                  <span>drakeforum.design</span>
                 </div>
               </div>
 

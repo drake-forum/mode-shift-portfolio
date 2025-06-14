@@ -42,7 +42,7 @@ const HeroSection: React.FC = () => {
             <h1 className={`text-6xl md:text-8xl font-bold mb-6 transition-all duration-500 ${
               mode === 'developer' ? 'dev-gradient-text font-mono' : 'gradient-text'
             }`}>
-              Alex Rivera
+              Drake Forum
             </h1>
             
             <div className="h-16 flex items-center justify-center">
