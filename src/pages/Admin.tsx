@@ -181,6 +181,13 @@ const AdminContent = () => {
     }
   }, []);
 
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin)) {
+      navigate('/auth');
+    }
+  }, [user, isAdmin, loading, navigate]);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -251,12 +258,6 @@ const AdminContent = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
-      navigate('/auth');
-    }
-  }, [user, isAdmin, loading, navigate]);
 
   if (!user || !isAdmin) {
     return null;
