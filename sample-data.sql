@@ -112,7 +112,7 @@ INSERT INTO public.blog_posts (title, slug, excerpt, content, image, author, pub
   '/placeholder.svg',
   'John Developer',
   true,
-  NOW() - INTERVAL ''7 days'',
+  NOW() - INTERVAL '7 days',
   ARRAY['React', 'TypeScript', 'Web Development'],
   5
 ),
@@ -124,7 +124,7 @@ INSERT INTO public.blog_posts (title, slug, excerpt, content, image, author, pub
   '/placeholder.svg',
   'John Developer',
   true,
-  NOW() - INTERVAL ''14 days'',
+  NOW() - INTERVAL '14 days',
   ARRAY['Node.js', 'API', 'Backend'],
   8
 ),
