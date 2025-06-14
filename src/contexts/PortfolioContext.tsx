@@ -47,11 +47,13 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       root.style.setProperty('--secondary', 'var(--designer-secondary)');
       root.style.setProperty('--muted', 'var(--designer-muted)');
       root.style.setProperty('--accent', 'var(--designer-accent)');
-      root.style.setProperty('--card', '255 255 255');
+      root.style.setProperty('--card', 'var(--designer-secondary)');
       root.style.setProperty('--card-foreground', 'var(--designer-foreground)');
-      root.style.setProperty('--border', '226 232 240');
-      root.style.setProperty('--input', '226 232 240');
-      root.style.setProperty('--muted-foreground', '100 116 139');
+      root.style.setProperty('--border', 'var(--designer-muted)');
+      root.style.setProperty('--input', 'var(--designer-muted)');
+      root.style.setProperty('--muted-foreground', '148 163 184');
+      root.style.setProperty('--primary-foreground', 'var(--designer-background)');
+      root.style.setProperty('--accent-foreground', 'var(--designer-background)');
       document.body.className = 'designer-mode';
     }
   }, [mode]);
