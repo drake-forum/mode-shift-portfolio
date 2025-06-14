@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           setTimeout(async () => {
             const adminStatus = await checkAdminStatus();
             setIsAdmin(adminStatus);
-          }, 0);
+          }, 100);
         } else {
           setIsAdmin(false);
         }
@@ -88,14 +88,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           const adminStatus = await checkAdminStatus();
           setIsAdmin(adminStatus);
           setLoading(false);
-        }, 0);
+        }, 100);
       } else {
         setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [user?.id]);
+  }, []); // Remove user?.id dependency to prevent infinite loops
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({

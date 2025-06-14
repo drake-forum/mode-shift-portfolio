@@ -11,14 +11,14 @@ import { supabase } from '@/integrations/supabase/client';
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { user, signIn, signUp } = useAuth();
+  const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       navigate('/admin');
     }
-  }, [user, navigate]);
+  }, [user, loading, navigate]);
 
   const setupAdminAccess = async () => {
     try {
