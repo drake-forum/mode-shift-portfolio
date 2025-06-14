@@ -16,11 +16,11 @@
     --dev-muted: 140 20% 15%;
     
     /* Designer Mode Colors - Dark Theme with Bright Accents */
-    --designer-background: 15 23 42;
-    --designer-foreground: 248 250 252;
-    --designer-accent: 59 130 246;
-    --designer-secondary: 51 65 85;
-    --designer-muted: 71 85 105;
+    --designer-background: 222.2 84% 4.9%;
+    --designer-foreground: 210 40% 98%;
+    --designer-accent: 217.2 91.2% 59.8%;
+    --designer-secondary: 217.2 32.6% 17.5%;
+    --designer-muted: 217.2 32.6% 17.5%;
     
     /* Dynamic colors (will be set by JS) */
     --background: 210 40% 98%;
