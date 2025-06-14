@@ -539,6 +539,7 @@ const Admin = () => {
     <PortfolioProvider>
       <AdminContent />
     </PortfolioProvider>
+  );
 };
 
 export default Admin;
