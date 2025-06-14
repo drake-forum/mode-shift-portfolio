@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePortfolio } from '@/contexts/PortfolioContext';
+import { PortfolioProvider, usePortfolio } from '@/contexts/PortfolioContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Shield, Lock, Settings, User, Briefcase, FileText, Image, MessageSquare, BarChart3, Palette, Code, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const Admin = () => {
+const AdminContent = () => {
   const { mode } = usePortfolio();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -532,6 +532,13 @@ const Admin = () => {
       </div>
     </div>
   );
+};
+
+const Admin = () => {
+  return (
+    <PortfolioProvider>
+      <AdminContent />
+    </PortfolioProvider>
 };
 
 export default Admin;
