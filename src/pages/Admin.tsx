@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PortfolioProvider, usePortfolio } from '@/contexts/PortfolioContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,8 +53,9 @@ const AdminContent = () => {
   const { mode } = usePortfolio();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const { user, isAdmin, loading, signIn, signOut } = useAuth();
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [isSignUp, setIsSignUp] = useState(false);
   const [portfolioData, setPortfolioData] = useState({
     // Hero Section
     hero: {
@@ -179,42 +181,33 @@ const AdminContent = () => {
     }
   }, []);
 
-  useEffect(() => {
-    // Check if user is already authenticated
-    const authStatus = localStorage.getItem('admin-authenticated');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Replace with actual authentication logic
-    // For now, just simulate authentication
-    if (loginForm.username && loginForm.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('admin-authenticated', 'true');
+    
+    if (!loginForm.email || !loginForm.password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const { error } = isSignUp 
+      ? await signIn(loginForm.email, loginForm.password)
+      : await signIn(loginForm.email, loginForm.password);
+
+    if (!error && !isSignUp) {
       toast({
         title: "Login Successful",
         description: "Welcome to the admin panel!"
       });
-    } else {
-      toast({
-        title: "Login Failed",
-        description: "Please enter both username and password.",
-        variant: "destructive"
-      });
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('admin-authenticated');
+  const handleLogout = async () => {
+    await signOut();
     navigate('/');
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out."
-    });
   };
 
   const handleSave = (section: string) => {
@@ -251,58 +244,22 @@ const AdminContent = () => {
     { id: 'settings', label: 'Site Settings', icon: Settings },
   ];
 
-  if (!isAuthenticated) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
-        <Card className="w-full max-w-md shadow-2xl border-0 bg-card/80 backdrop-blur-sm">
-          <CardHeader className="text-center space-y-4 pb-8">
-            <div className="flex justify-center">
-              <div className="p-3 rounded-full bg-primary/10">
-                <Shield className="h-8 w-8 text-primary" />
-              </div>
-            </div>
-            <div>
-              <CardTitle className="text-2xl font-bold">Admin Portal</CardTitle>
-              <p className="text-muted-foreground mt-2">
-                Secure access to portfolio management
-              </p>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-8">
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username" className="text-sm font-medium">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    value={loginForm.username}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, username: e.target.value }))}
-                    placeholder="Enter your username"
-                    className="h-11"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={loginForm.password}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
-                    placeholder="Enter your password"
-                    className="h-11"
-                  />
-                </div>
-              </div>
-              <Button type="submit" className="w-full h-11 font-medium">
-                <Lock className="mr-2 h-4 w-4" />
-                Access Admin Panel
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
+  }
+
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin)) {
+      navigate('/auth');
+    }
+  }, [user, isAdmin, loading, navigate]);
+
+  if (!user || !isAdmin) {
+    return null;
   }
 
   return (
