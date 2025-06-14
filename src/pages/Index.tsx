@@ -4,6 +4,7 @@ import MatrixRain from '@/components/backgrounds/MatrixRain';
 import FloatingBlobs from '@/components/backgrounds/FloatingBlobs';
 import ModeToggle from '@/components/ModeToggle';
 import Navigation from '@/components/Navigation';
+import AdminAccess from '@/components/AdminAccess';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
@@ -27,6 +28,7 @@ const PortfolioContent = () => {
       {/* Mode Toggle */}
       <Navigation />
       <ModeToggle />
+      <AdminAccess />
       
       {/* Main Content */}
       <main className="relative">
