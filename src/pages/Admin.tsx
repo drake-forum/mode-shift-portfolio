@@ -330,10 +330,10 @@ const AdminContent = () => {
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-sm ${
                 activeSection === item.id
-                  ? 'bg-primary/10 text-primary font-medium border border-primary/20'
-                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                  ? 'bg-primary/10 text-primary font-medium border border-primary/20 shadow-sm'
+                  : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground hover:border hover:border-border/30'
               }`}
             >
               <item.icon className="h-4 w-4" />
@@ -343,7 +343,12 @@ const AdminContent = () => {
         </nav>
 
         <div className="absolute bottom-4 left-4 right-4">
-          <Button variant="outline" size="sm" onClick={handleLogout} className="w-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleLogout} 
+            className="w-full hover:scale-[1.02] transition-all duration-200 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 hover:shadow-sm"
+          >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
