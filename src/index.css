@@ -16,9 +16,9 @@
     --dev-muted: 140 20% 15%;
     
     /* Designer Mode Colors - Light Theme */
-    --designer-background: 250 250 250;
-    --designer-foreground: 15 23 42;
-    --designer-accent: 147 51 234;
+    --designer-background: 255 255 255;
+    --designer-foreground: 30 41 59;
+    --designer-accent: 59 130 246;
     --designer-secondary: 248 250 252;
     --designer-muted: 241 245 249;
     
@@ -199,7 +199,7 @@
   
   /* Gradient Text */
   .gradient-text {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #2563eb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
