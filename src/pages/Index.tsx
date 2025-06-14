@@ -5,8 +5,12 @@ import FloatingBlobs from '@/components/backgrounds/FloatingBlobs';
 import ModeToggle from '@/components/ModeToggle';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
+import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
+import ProcessSection from '@/components/ProcessSection';
 import PortfolioSection from '@/components/PortfolioSection';
+import StatsSection from '@/components/StatsSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 
 const PortfolioContent = () => {
@@ -24,8 +28,12 @@ const PortfolioContent = () => {
       {/* Main Content */}
       <main className="relative">
         <HeroSection />
+        <AboutSection />
         <SkillsSection />
+        <ProcessSection />
         <PortfolioSection />
+        <StatsSection />
+        <TestimonialsSection />
         <ContactSection />
       </main>
     </div>
