@@ -308,7 +308,7 @@ const AdminContent = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
-      <div className="w-64 bg-card border-r border-border/50 shadow-sm">
+      <div className="w-64 bg-card border-r border-border/50 shadow-sm flex flex-col">
         <div className="p-6 border-b border-border/50">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">
@@ -339,7 +339,7 @@ const AdminContent = () => {
           </div>
         </div>
 
-        <nav className="p-4 space-y-1">
+        <nav className="p-4 space-y-1 flex-1">
           {sidebarItems.map((item) => (
             <button
               key={item.id}
@@ -356,7 +356,7 @@ const AdminContent = () => {
           ))}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="p-4 border-t border-border/50">
           <Button 
             variant="outline" 
             size="sm" 
