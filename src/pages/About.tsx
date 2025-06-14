@@ -4,12 +4,9 @@ import MatrixRain from '@/components/backgrounds/MatrixRain';
 import FloatingBlobs from '@/components/backgrounds/FloatingBlobs';
 import ModeToggle from '@/components/ModeToggle';
 import Navigation from '@/components/Navigation';
-import HeroSection from '@/components/HeroSection';
-import SkillsSection from '@/components/SkillsSection';
-import PortfolioSection from '@/components/PortfolioSection';
-import ContactSection from '@/components/ContactSection';
+import AboutSection from '@/components/AboutSection';
 
-const PortfolioContent = () => {
+const AboutContent = () => {
   const { mode } = usePortfolio();
 
   return (
@@ -17,27 +14,24 @@ const PortfolioContent = () => {
       {/* Background Animation */}
       {mode === 'developer' ? <MatrixRain /> : <FloatingBlobs />}
       
-      {/* Mode Toggle */}
+      {/* Navigation & Mode Toggle */}
       <Navigation />
       <ModeToggle />
       
       {/* Main Content */}
-      <main className="relative">
-        <HeroSection />
-        <SkillsSection />
-        <PortfolioSection />
-        <ContactSection />
+      <main className="relative pt-20">
+        <AboutSection />
       </main>
     </div>
   );
 };
 
-const Index = () => {
+const About = () => {
   return (
     <PortfolioProvider>
-      <PortfolioContent />
+      <AboutContent />
     </PortfolioProvider>
   );
 };
 
-export default Index;
+export default About;
