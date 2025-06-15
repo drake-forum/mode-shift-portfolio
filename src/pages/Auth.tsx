@@ -47,9 +47,16 @@ const Auth = () => {
       if (!error) {
         // Set up admin access after successful signup
         setTimeout(setupAdminAccess, 1000);
+        toast({
+          title: "Account Created",
+          description: "Please check your email to confirm your account, then you can access the admin panel."
+        });
       }
     } else {
-      await signIn(formData.email, formData.password);
+      const { error } = await signIn(formData.email, formData.password);
+      if (!error) {
+        navigate('/admin');
+      }
     }
   };
 
