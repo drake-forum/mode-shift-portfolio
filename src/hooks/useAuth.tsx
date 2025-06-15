@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           // Check admin status after setting user
           setTimeout(async () => {
             const adminStatus = await checkAdminStatus();
+            console.log('Admin status for user:', session.user.id, adminStatus);
             setIsAdmin(adminStatus);
           }, 100);
         } else {

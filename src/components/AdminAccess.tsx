@@ -1,26 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 
 const AdminAccess: React.FC = () => {
   const [clickCount, setClickCount] = useState(0);
   const navigate = useNavigate();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogoClick = () => {
-    setClickCount(prev => {
-      const newCount = prev + 1;
-      
-      // Hidden sequence: 7 clicks on the shield icon
-      if (newCount === 7) {
-        navigate('/admin');
-        return 0; // Reset counter
-      }
-      
-      return newCount;
-    });
+    // Clear existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-    // Reset counter after 3 seconds of no clicks using useEffect pattern
-    setTimeout(() => {
+    const newCount = clickCount + 1;
+    
+    // Hidden sequence: 7 clicks on the shield icon
+    if (newCount === 7) {
+      navigate('/auth');
+      setClickCount(0);
+      return;
+    }
+    
+    setClickCount(newCount);
+
+    // Reset counter after 3 seconds of no clicks
+    timeoutRef.current = setTimeout(() => {
       setClickCount(0);
     }, 3000);
   };
