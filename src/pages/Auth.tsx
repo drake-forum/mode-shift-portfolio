@@ -14,11 +14,7 @@ const Auth = () => {
   const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user && !loading) {
-      navigate('/admin');
-    }
-  }, [user, loading, navigate]);
+  // Don't auto-redirect - let users manually navigate
 
   const setupAdminAccess = async () => {
     try {
