@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Shield, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const { user, loading, signIn, signUp } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
 
   // Don't auto-redirect - let users manually navigate
